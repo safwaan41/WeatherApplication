@@ -44,9 +44,63 @@ var searchCities = [];
     
 // } LOCAL STORAGE TO WORK ON
 
-cityInput.addEventListener("submit" function (search)){
-var cities = {};
-search.preventDefault();
-var cityInput = 
+cityInput.addEventListener("submit" , function (search)
+{
+    search.preventDefault();
+    var cities = {};
+    cityInput.val("");
+    
 
-}
+    fetch 
+    (
+        "https://api.openweathermap.org/geo/1.0/direct?q=" + cityInput +"&units=imperial&appid=" + apiKey
+    )
+
+        then((data)=>
+        {
+            return data.json();
+        })
+
+        .then((data) =>
+        {
+            for (var el of data)
+            {
+                cities["${el.name}, ${el.lat}, ${el.lon}"] =
+                {
+                    name: el.name,
+                    lat: el.lat,
+                    lon: el.lon,
+                    state: el.state,
+                    country: el.country
+                };
+                var li = $("<li>");
+                li.attr("class", "option");
+                li.attr("id", `${el.name}_${el.lat}_${el.lon}`);
+                li.text(`${el.name}, ${el.state}, ${el.country}`);
+                $("#options").append(li);
+            }
+
+            $(".option").on("click", function (search) 
+            {
+                let cityInput = $(e.target).text();
+                $("#options").empty();
+                $("#options").css("display", "none");
+                let element = $(e.target);
+                let elObj = cities[element.attr("id")];
+
+                searchLocation[`${elObj.name}_${elObj.state}_${elObj.country}`] = elObj;
+
+                localStorage.setItem("locationData", JSON.stringify(searchLocation));
+        
+                let lat = parseFloat(elObj.lat);
+        
+                let lon = parseFloat(elObj.lon);
+
+                getWeatherData(lat, lon, key, cityInput);
+        
+                renderLocationData();
+        });
+    });    
+});
+
+console.log(fetch);
