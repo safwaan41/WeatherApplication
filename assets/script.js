@@ -19,18 +19,19 @@ var cityListEl = document.querySelector(".cityList");
 
 var key = '635c7388698dd4b9e9794873cc2403c3';
 var fetchURL = "https://api.openweathermap.org/data/2.5/weather?q=" + cityInput + "&appid=" + key
-fetch (fetchURL);
-console.log()
+
 
 function weatherBalloon( cityInput ) 
 {
     var key = '635c7388698dd4b9e9794873cc2403c3';
     fetch("https://api.openweathermap.org/data/2.5/weather?q=dallas&appid=" + key) 
     
-    .then(function(resp) { return resp.json() }) // Convert data to json
+    .then(function(resp) {  resp.json() }) // Convert data to json
     .then(function(data) {
         console.log(data);
-     
+        // document.getElementById('description').innerHTML = d.weather[0].description;
+        document.getElementById('temperature').textContent= Fahrenheit + '&deg;';
+        document.getElementById('cityEl').innerHTML = d.name;
     })
     .catch(function() {
       // catch any errors
@@ -43,9 +44,7 @@ function weatherBalloon( cityInput )
 	
 	var fahrenheit = Math.round(((parseFloat(d.main.temp)-273.15)*1.8)+32); 
 	
-	document.getElementById('description').innerHTML = d.weather[0].description;
-	document.getElementById('tempEl').innerHTML = Fahrenheit + '&deg;';
-	document.getElementById('cityEl').innerHTML = d.name;
+
 }
 
 //   fetch("https://api.openweathermap.org/data/2.5/weather?lat=43.700111&lon=-79.416298&appid=" + key) 
